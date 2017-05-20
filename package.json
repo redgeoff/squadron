@@ -1,7 +1,7 @@
 {
   "name": "squadron",
   "version": "0.0.1",
-  "description": "Distributed discovery of docker service tasks",
+  "description": "Synchronize, throttle and debounce promises",
   "main": "index.js",
   "repository": {
     "type": "git",
