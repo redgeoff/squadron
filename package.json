@@ -1,0 +1,38 @@
+{
+  "name": "squadron",
+  "version": "0.0.1",
+  "description": "Distributed discovery of docker service tasks",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/redgeoff/squadron"
+  },
+  "keywords": [],
+  "author": "Geoff Cox",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/redgeoff/squadron"
+  },
+  "scripts": {
+    "assert-beautified": "beautify-proj -i test -c beautify.json && beautify-proj -i scripts -c beautify.json",
+    "beautify": "beautify-proj -i test -o . -c beautify.json && beautify-proj -i scripts -o . -c beautify.json",
+    "jshint": "jshint -c .jshintrc test scripts",
+    "node-test": "./node_modules/mocha/bin/_mocha test/index.js",
+    "node-test-with-coverage": "istanbul test --dir coverage/node ./node_modules/mocha/bin/_mocha test/index.js",
+    "node-full-test": "npm run jshint && npm run node-test-with-coverage --coverage && istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100",
+    "test": "npm run assert-beautified && npm run node-full-test"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "events": "^1.1.1",
+    "inherits": "^2.0.3"
+  },
+  "devDependencies": {
+    "beautify-proj": "0.0.4",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "istanbul": "^0.4.4",
+    "jshint": "^2.9.2",
+    "mocha": "^3.0.2"
+  }
+}
