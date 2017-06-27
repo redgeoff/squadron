@@ -39,11 +39,11 @@
     "inherits": "^2.0.3"
   },
   "devDependencies": {
-    "beautify-proj": "0.0.4",
+    "beautify-proj": "1.0.0",
     "browserify": "^14.3.0",
     "browserify-istanbul": "^2.0.0",
-    "chai": "^3.5.0",
-    "chai-as-promised": "^6.0.0",
+    "chai": "^4.0.2",
+    "chai-as-promised": "^7.0.0",
     "es5-shim": "^4.5.9",
     "http-server": "^0.10.0",
     "istanbul": "^0.4.4",
