@@ -1,5 +1,7 @@
 # squadron
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/redgeoff/squadron.svg)](https://greenkeeper.io/)
+
 Synchronize, throttle and debounce promises
 
 
