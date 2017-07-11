@@ -1,6 +1,6 @@
 # squadron
 
-[![Circle CI](https://circleci.com/gh/redgeoff/squadron.svg?style=svg&circle-token=b29ea543b83db42a9ea44ed4ce4ae4cdccc3be21)](https://circleci.com/gh/redgeoff/squadron)
+[![Circle CI](https://circleci.com/gh/redgeoff/squadron.svg?style=svg&circle-token=b29ea543b83db42a9ea44ed4ce4ae4cdccc3be21)](https://circleci.com/gh/redgeoff/squadron) [![Greenkeeper badge](https://badges.greenkeeper.io/redgeoff/squadron.svg)](https://greenkeeper.io/)
 
 Synchronize, throttle and debounce promises
 
