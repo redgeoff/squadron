@@ -1,5 +1,7 @@
 # squadron
 
+[![Circle CI](https://circleci.com/gh/redgeoff/squadron.svg?style=svg&circle-token=b29ea543b83db42a9ea44ed4ce4ae4cdccc3be21)](https://circleci.com/gh/redgeoff/squadron)
+
 Synchronize, throttle and debounce promises
 
 
@@ -29,11 +31,12 @@ Synchronizer
 
 The Synchronizer can be used to synchronize any set of promises. It can be very useful when you need to ensure sequential ordering. It can also be used to implement a mutex around a resource as it ensures that only one promise can access the resource concurrently.
 
-    var squadron = require('squadron');
+    var squadron = require('squadron'),
+      sporks = require('sporks');
 
     var testPromise = function (milliseconds, name) {
       console.log('begin', name);
-      return squadron.utils.timeout(milliseconds).then(function () {
+      return sporks.timeout(milliseconds).then(function () {
         console.log('end', name);
         return name;
       });
