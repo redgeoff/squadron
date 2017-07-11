@@ -1,9 +1,9 @@
 'use strict';
 
-var Promise = require('bluebird'),
+var Promise = require('sporks/scripts/promise'),
   inherits = require('inherits'),
   events = require('events'),
-  utils = require('./utils');
+  sporks = require('sporks');
 
 /**
  * Uses a queue of promise factories to synchronize promises. This is helpful for when resources
@@ -127,7 +127,7 @@ Synchronizer.prototype.allDone = function () {
   if (this.numProcesses() === 0) {
     return Promise.resolve();
   } else {
-    return utils.once(this, 'all-done');
+    return sporks.once(this, 'all-done');
   }
 };
 

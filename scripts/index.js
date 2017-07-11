@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+  Debouncer: require('./debouncer'),
   Synchronizer: require('./synchronizer'),
-  utils: require('./utils')
+  Throttler: require('./throttler')
 };

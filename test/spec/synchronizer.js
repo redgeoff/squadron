@@ -1,8 +1,8 @@
 'use strict';
 
-var utils = require('../../scripts/utils'),
-  Synchronizer = require('../../scripts/synchronizer'),
-  Promise = require('bluebird');
+var sporks = require('sporks'),
+  Promise = require('sporks/scripts/promise'),
+  Synchronizer = require('../../scripts').Synchronizer;
 
 describe('synchronizer', function () {
 
@@ -14,10 +14,9 @@ describe('synchronizer', function () {
     synchronizer = new Synchronizer();
   });
 
-  // TODO: move to test utils?
   var timeoutFactory = function (label, ms) {
     return function () {
-      return utils.timeout(ms).then(function () {
+      return sporks.timeout(ms).then(function () {
         labels.push(label);
       });
     };
@@ -47,7 +46,7 @@ describe('synchronizer', function () {
     // other promises. Instead the error should be returned to the caller of run().
 
     var promise1 = synchronizer.run(function () {
-      return utils.timeout(200).then(function () {
+      return sporks.timeout(200).then(function () {
         throw new Error('some err');
       });
     }).catch(function (_err) {
@@ -57,7 +56,7 @@ describe('synchronizer', function () {
     promises.push(promise1);
 
     promises.push(synchronizer.run(function () {
-      return utils.timeout(100);
+      return sporks.timeout(100);
     }));
 
     return Promise.all(promises).then(function () {
@@ -69,14 +68,14 @@ describe('synchronizer', function () {
   it('should handle gap in scheduling', function () {
     // 1st promise
     return synchronizer.run(function () {
-      return utils.timeout(100);
+      return sporks.timeout(100);
     }).then(function () {
       // The gap
-      return utils.timeout(200);
+      return sporks.timeout(200);
     }).then(function () {
       // 2nd promise
       return synchronizer.run(function () {
-        return utils.timeout(100);
+        return sporks.timeout(100);
       });
     });
   });
@@ -115,18 +114,18 @@ describe('synchronizer', function () {
   });
 
   it('should emit process-done', function () {
-    var done = utils.once(synchronizer, 'process-done');
+    var done = sporks.once(synchronizer, 'process-done');
     return synchronizer.run(timeoutFactory(1, 1)).then(function () {
       return done;
     });
   });
 
   it('should emit process-error', function () {
-    var errored = utils.once(synchronizer, 'process-error'),
+    var errored = sporks.once(synchronizer, 'process-error'),
       err = new Error('some err');
 
     return synchronizer.run(function () {
-      return utils.timeout(1).then(function () {
+      return sporks.timeout(1).then(function () {
         throw err;
       });
     }).catch(function () {
@@ -140,7 +139,7 @@ describe('synchronizer', function () {
     synchronizer.run(timeoutFactory(1, 1));
     synchronizer.run(timeoutFactory(2, 1));
 
-    return utils.once(synchronizer, 'all-done').then(function () {
+    return sporks.once(synchronizer, 'all-done').then(function () {
       labels.should.eql([1, 2]);
     });
   });
