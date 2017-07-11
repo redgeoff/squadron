@@ -9,15 +9,17 @@ TODO
 ---
 Throttler and Debouncer (not yet included in this repo are essential), but can't something like the following be used in place of Synchronizer?? Any benefit to using Synchronizer or should it be refactored out?
 
-    var synchronizer = Promise.resolve();
+```js
+var synchronizer = Promise.resolve();
 
-    synchronizer = synchronizer.then(function () {
-      // promise 1
-    });
+synchronizer = synchronizer.then(function () {
+  // promise 1
+});
 
-    synchronizer = synchronizer.then(function () {
-      // promise 2
-    });
+synchronizer = synchronizer.then(function () {
+  // promise 2
+});
+```
 
 
 Installation
@@ -31,26 +33,28 @@ Synchronizer
 
 The Synchronizer can be used to synchronize any set of promises. It can be very useful when you need to ensure sequential ordering. It can also be used to implement a mutex around a resource as it ensures that only one promise can access the resource concurrently.
 
-    var squadron = require('squadron'),
-      sporks = require('sporks');
+```js
+var squadron = require('squadron'),
+  sporks = require('sporks');
 
-    var testPromise = function (milliseconds, name) {
-      console.log('begin', name);
-      return sporks.timeout(milliseconds).then(function () {
-        console.log('end', name);
-        return name;
-      });
-    };
+var testPromise = function (milliseconds, name) {
+  console.log('begin', name);
+  return sporks.timeout(milliseconds).then(function () {
+    console.log('end', name);
+    return name;
+  });
+};
 
-    var synchronizer = new squadron.Synchronizer();
+var synchronizer = new squadron.Synchronizer();
 
-    synchronizer.run(function () {
-      return testPromise(200, 'promise 1');
-    });
+synchronizer.run(function () {
+  return testPromise(200, 'promise 1');
+});
 
-    synchronizer.run(function () {
-      return testPromise(100, 'promise 2');
-    });
+synchronizer.run(function () {
+  return testPromise(100, 'promise 2');
+});
+```
 
 The output is then
 
