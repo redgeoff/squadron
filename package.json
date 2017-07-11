@@ -40,7 +40,7 @@
     "sporks": "0.0.1"
   },
   "devDependencies": {
-    "beautify-proj": "1.0.0",
+    "beautify-proj": "^1.0.0",
     "browserify": "^14.4.0",
     "chai": "^4.0.2",
     "chai-as-promised": "^6.0.0",
