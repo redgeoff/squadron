@@ -14,46 +14,45 @@
     "url": "https://github.com/redgeoff/squadron"
   },
   "scripts": {
-    "assert-beautified": "beautify-proj -i test -c beautify.json -e bundle.js && beautify-proj -i scripts -c beautify.json",
-    "beautify": "beautify-proj -i test -o . -c beautify.json -e bundle.js && beautify-proj -i scripts -o . -c beautify.json",
+    "assert-beautified": "beautify-proj -i test -c beautify.json && beautify-proj -i scripts -c beautify.json",
+    "beautify": "beautify-proj -i test -o . -c beautify.json && beautify-proj -i scripts -o . -c beautify.json",
     "jshint": "jshint -c .jshintrc test scripts",
-    "node-test": "./node_modules/mocha/bin/_mocha test/index.js",
-    "node-test-with-coverage": "istanbul test --dir coverage/node ./node_modules/mocha/bin/_mocha test/index.js",
-    "node-full-test": "npm run jshint && npm run node-test-with-coverage --coverage && istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100",
-    "browser-server": "./test/browser/server.js",
-    "browser-test": "./test/browser/test.js",
-    "browser-test-firefox": "CLIENT=selenium:firefox npm run browser-test",
-    "browser-test-chrome": "CLIENT=selenium:chrome npm run browser-test",
-    "browser-test-phantomjs": "CLIENT=selenium:phantomjs npm run browser-test",
-    "browser-coverage-build": "browserify -t [ browserify-istanbul --ignore **/node_modules/** ] ./test/browser/index.js -o test/browser-coverage/bundle.js -d",
-    "browser-coverage-server": "./test/browser-coverage/server.js",
-    "browser-coverage-test": "./test/browser-coverage/test.js",
-    "browser-coverage-report": "istanbul report --dir coverage/browser --root coverage/browser lcov",
-    "browser-coverage-check": "istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100 coverage/browser/coverage.json",
-    "browser-coverage-full-test": "npm run jshint && npm run browser-coverage-build && npm run browser-coverage-test && npm run browser-coverage-report && npm run browser-coverage-check",
-    "test": "npm run assert-beautified && npm run node-full-test && npm run browser-coverage-full-test"
+    "node-test": "istanbul test --dir cache/coverage/node node_modules/mocha/bin/_mocha test/node.js",
+    "node-full-test": "npm run node-test --coverage && istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100",
+    "browser-server": "node_modules/gofur/scripts/browser/serve.js -c cache -t test/browser.js",
+    "browser-test": "node_modules/gofur/scripts/browser/test.js -c cache -t test/browser.js",
+    "browser-test-firefox": "node_modules/gofur/scripts/browser/test.js -c cache -t test/browser.js -b selenium:firefox",
+    "browser-test-chrome": "node_modules/gofur/scripts/browser/test.js -c cache -t test/browser.js -b selenium:chrome",
+    "browser-test-phantomjs": "node_modules/gofur/scripts/browser/test.js -c cache -t test/browser.js -b selenium:phantomjs",
+    "browser-coverage-server": "node_modules/gofur/scripts/browser-coverage/serve.js -c cache -t test/browser.js",
+    "browser-coverage-test": "node_modules/gofur/scripts/browser-coverage/test.js -c cache -t test/browser.js",
+    "browser-coverage-report": "istanbul report --dir cache/coverage/browser --root cache/coverage/browser lcov",
+    "browser-coverage-check": "istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100 cache/coverage/browser/coverage.json",
+    "browser-coverage-full-test": "npm run browser-coverage-test && npm run browser-coverage-report && npm run browser-coverage-check",
+    "test": "npm run assert-beautified && npm run jshint && npm run node-full-test && npm run browser-coverage-full-test",
+    "TODO-build": "",
+    "TODO-test-in-sauce": ""
   },
   "dependencies": {
-    "bluebird": "^3.4.1",
+    "bluebird": "^3.5.0",
     "events": "^1.1.1",
-    "inherits": "^2.0.3"
+    "inherits": "^2.0.3",
+    "sporks": "0.0.1"
   },
   "devDependencies": {
     "beautify-proj": "1.0.0",
-    "browserify": "^14.3.0",
-    "browserify-istanbul": "^2.0.0",
+    "browserify": "^14.4.0",
     "chai": "^4.0.2",
-    "chai-as-promised": "^7.0.0",
-    "es5-shim": "^4.5.9",
-    "http-server": "^0.10.0",
-    "istanbul": "^0.4.4",
-    "jshint": "^2.9.2",
-    "mocha": "^3.0.2",
-    "mocha-phantomjs": "^4.1.0",
-    "sauce-connect-launcher": "^1.2.2",
-    "saucelabs": "^1.4.0",
-    "selenium-standalone": "^6.4.1",
-    "watchify": "^3.9.0",
-    "wd": "^1.2.0"
+    "chai-as-promised": "^6.0.0",
+    "gofur": "^0.0.6",
+    "istanbul": "^0.4.5",
+    "jshint": "^2.9.4",
+    "mocha": "^3.4.2",
+    "request": "^2.81.0"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "chai-as-promised"
+    ]
   }
 }

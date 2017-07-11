@@ -5,3 +5,7 @@ chai.use(require('chai-as-promised'));
 chai.should();
 
 require('./spec');
+
+// describe('node', function () {
+//
+// });
