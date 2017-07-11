@@ -1,10 +1,11 @@
 'use strict';
 
-var squadron = require('../../scripts');
+var squadron = require('../../scripts'),
+  sporks = require('sporks');
 
 var testPromise = function (milliseconds, name) {
   console.log('begin', name);
-  return squadron.utils.timeout(milliseconds).then(function () {
+  return sporks.timeout(milliseconds).then(function () {
     console.log('end', name);
     return name;
   });
