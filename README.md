@@ -5,23 +5,6 @@
 Synchronize, throttle and debounce promises
 
 
-TODO
----
-The Throttler and Debouncer are essential, but can't something like the following be used in place of the Synchronizer?? Any benefit to using the Synchronizer or should it be refactored out?
-
-```js
-var synchronizer = Promise.resolve();
-
-synchronizer = synchronizer.then(function () {
-  // promise 1
-});
-
-synchronizer = synchronizer.then(function () {
-  // promise 2
-});
-```
-
-
 Installation
 ---
 
