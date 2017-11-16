@@ -18,6 +18,9 @@ var Synchronizer = function () {
   this._numProcesses = 0;
 
   this._running = false;
+
+  // The last promise to be added to the list
+  this._last = Promise.resolve();
 };
 
 inherits(Synchronizer, events.EventEmitter);
@@ -64,6 +67,9 @@ Synchronizer.prototype.run = function (promiseFactory) {
     this._running = true;
     this._processFactories();
   }
+
+  // Save so that it can be referenced quickly
+  this._last = promise;
 
   return promise;
 
@@ -129,6 +135,10 @@ Synchronizer.prototype.allDone = function () {
   } else {
     return sporks.once(this, 'all-done');
   }
+};
+
+Synchronizer.prototype.last = function () {
+  return this._last;
 };
 
 module.exports = Synchronizer;

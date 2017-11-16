@@ -1,7 +1,8 @@
 'use strict';
 
 var sporks = require('sporks'),
-  Debouncer = require('../../scripts').Debouncer;
+  Debouncer = require('../../scripts').Debouncer,
+  Promise = require('sporks/scripts/promise');
 
 describe('debouncer', function () {
 
@@ -21,6 +22,8 @@ describe('debouncer', function () {
         if (throwError) {
           throw new Error('test error');
         }
+
+        return label;
       });
     };
   };
@@ -82,12 +85,17 @@ describe('debouncer', function () {
     // The 2nd process is not a dup as by the time the 2nd process is scheduled, the 1st process is
     // already marked as running. The 3rd process however will be ignored as it is scheduled when
     // the 2nd process is in a waiting state.
-    debouncer.run(timeoutFactory(1, 500));
-    debouncer.run(timeoutFactory(2, 100));
-    debouncer.run(timeoutFactory(3, 100));
+    var p1 = debouncer.run(timeoutFactory(1, 500));
+    var p2 = debouncer.run(timeoutFactory(2, 100));
+    var p3 = debouncer.run(timeoutFactory(3, 100));
 
     return sleep().then(function () {
       log.should.eql([1, 2]);
+    }).then(function () {
+      return Promise.all([p1, p2, p3]);
+    }).then(function (labels) {
+      // Note: the third entry is the same as the second as the 3rd promise was debounced
+      labels.should.eql([1, 2, 2]);
     });
   });
 

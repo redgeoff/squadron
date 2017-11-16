@@ -67,7 +67,7 @@ Debouncer.prototype._wrapPromiseFactory = function (promiseFactory, process) {
       process.running = true;
     }).then(function () {
       return promiseFactory();
-    }).then(function () {
+    }).then(function (value) {
       // Remove from list as the process has completed. We need to use indexOf as splice
       // changes array indexes and therefore we may otherwise try to remove an index that is
       // outdated.
@@ -78,6 +78,9 @@ Debouncer.prototype._wrapPromiseFactory = function (promiseFactory, process) {
       if (self._processes.length === 0) {
         self.emit('all-done');
       }
+
+      // Return value of resolved promise
+      return value;
     });
   };
 };
@@ -113,26 +116,36 @@ Debouncer.prototype._schedule = function (promiseFactory, resource) {
   if (!process || process.running) {
     return this._runProcess(resource, promiseFactory, process);
   } else {
-    // Make sure that a promise is returned
-    return Promise.resolve();
+    // Return the last promise in the synchronizer as this effectively results in the same flow as
+    // when the promise is added to the list and then processed.
+    return process.synchronizer.last();
   }
 };
 
 // If omitted, the resource will be undefined and will essentially act as a shared resource,
-// effectively synchronizing all processes that are scheduled without a resource.
+// effectively synchronizing all processes that are scheduled without a resource. If the promise is
+// not debounced then run() returns a promise that resolves when this promise is executed. On the
+// other hand, if the promise is debounced, the last promise in the associated synchronizer is
+// returned.
 Debouncer.prototype.run = function (promiseFactory, resource) {
   // Synchronize calls to schedule so that we don't have a race condition where we query and add to
   // the pocess list simultaneously--we need to ensure that we use the same synchronizer per
   // resource.
-  var self = this;
+  var self = this,
+    schedulePromise = null;
+
   return self._synchronizer.run(function () {
     // We don't return the _schedule promise here as we don't want to synchronize all calls to
     // runProcess as we want to be able to process different resources simulatenously.
-    self._schedule(promiseFactory, resource).catch(function (err) {
+    schedulePromise = self._schedule(promiseFactory, resource).catch(function (err) {
       // The errors happen asynchronously and we may want to detect them at the Debouncer layer. In
       // general though, it is probably best that the process factories handle these errors.
       self.emit('process-error', err);
     });
+  }).then(function () {
+    // We return the schedulePromise outside of the _synchronizer.run() call so that the caller of
+    // Debouncer.run can resolve the promise
+    return schedulePromise;
   });
 };
 
