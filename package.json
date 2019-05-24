@@ -34,7 +34,7 @@
     "TODO-test-in-sauce": ""
   },
   "dependencies": {
-    "bluebird": "^3.5.3",
+    "bluebird": "^3.5.5",
     "events": "^3.0.0",
     "inherits": "^2.0.3",
     "sporks": "^1.0.0"
